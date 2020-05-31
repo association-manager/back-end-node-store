@@ -2,7 +2,8 @@ import {Product} from "../models/Product";
 
 export const resolvers = {
     Query: {
-        products: () => Product.find()
+        products: async () => await Product.find(),
+        product: async (parent, args, context, info) => await Product.findOne({_id: args.id})
     },
     Mutation: {
         createProduct: async (_, {
