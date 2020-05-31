@@ -14,7 +14,9 @@
     "apollo-server-express": "^2.14.1",
     "express": "^4.17.1",
     "graphql": "^14.6.0",
-    "mongoose": "^5.9.16"
+    "knex": "^0.21.1",
+    "mongoose": "^5.9.16",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",

@@ -4,6 +4,7 @@ export const typeDefs = gql`
     type Query {
         product(id:ID!): Product
         products: [Product!]!
+        invoices: [Invoice!]!
     }
     type Product {
         id: ID!
@@ -15,6 +16,12 @@ export const typeDefs = gql`
         associationId: Int!
         createdAt: String
         updatedAt: String
+    }
+    type Invoice {
+        id: ID!
+        created_at: String!
+        amount: Float!
+        vat: Float!
     }
     type Mutation {
         createProduct(

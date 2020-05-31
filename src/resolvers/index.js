@@ -1,9 +1,11 @@
 import {Product} from "../models/Product";
+import knex from "../sql"
 
 export const resolvers = {
     Query: {
         products: async () => await Product.find(),
-        product: async (parent, args, context, info) => await Product.findOne({_id: args.id})
+        product: async (parent, args, context, info) => await Product.findOne({_id: args.id}),
+        invoices: async (parent, args, context, info) => await knex('invoice_shop').select("*")
     },
     Mutation: {
         createProduct: async (_, {
