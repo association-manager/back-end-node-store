@@ -67,13 +67,14 @@ export const resolvers = {
                 }
             });
         },
-        login: async (parent, {email, password}, {models, SECRET}) => {
+        login: async (parent, {email, password}) => {
             const user = await knex('user').select("*").where({email: email});
-            if (!user) {
+            if (!user[0].email === email) {
                 throw new Error('Not user with that email');
             }
+            console.log(user[0].email);
 
-            const valid = await bcrypt.compare(password, user.password);
+            const valid = await bcrypt.compare(password, user[0].password);
             if (!valid) {
                 throw new Error('Incorrect password');
             }
@@ -85,7 +86,7 @@ export const resolvers = {
                 {
                     user: _.pick(user, ['id', 'username']),
                 },
-                SECRET,
+                "SECRET123456789",
                 {
                     expiresIn: '1y',
                 },
