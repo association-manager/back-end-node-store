@@ -3,7 +3,6 @@ import knex from "../sql"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import {serialize} from 'php-serialize'
 
 export const resolvers = {
     Query: {
