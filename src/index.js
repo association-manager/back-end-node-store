@@ -5,6 +5,8 @@ import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 import session from 'express-session';
 import cors from 'cors';
+import dotenv  from 'dotenv';
+dotenv.config();
 import jwt from 'jsonwebtoken';
 
 const startServer = async () => {
@@ -34,12 +36,12 @@ const startServer = async () => {
 
     server.applyMiddleware({ app });
 
-    await mongoose.connect("mongodb://localhost:27017/test3", {
+    await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
 
-    app.listen({ port: 4000 }, () =>
+    app.listen({ port: process.env.PORT }, () =>
         console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
     );
 };

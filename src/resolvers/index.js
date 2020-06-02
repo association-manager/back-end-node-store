@@ -3,6 +3,8 @@ import knex from "../sql"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import dotenv  from 'dotenv';
+dotenv.config();
 
 export const resolvers = {
     Query: {
@@ -72,8 +74,6 @@ export const resolvers = {
             if (!user[0].email === email) {
                 throw new Error('Not user with that email');
             }
-            console.log(user[0].email);
-
             const valid = await bcrypt.compare(password, user[0].password);
             if (!valid) {
                 throw new Error('Incorrect password');
@@ -86,7 +86,7 @@ export const resolvers = {
                 {
                     user: _.pick(user, ['id', 'username']),
                 },
-                "SECRET123456789",
+                process.env.SECERT,
                 {
                     expiresIn: '1y',
                 },
