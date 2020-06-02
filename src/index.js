@@ -3,13 +3,32 @@ import express from "express";
 import mongoose from "mongoose";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
+import session from 'express-session';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 const startServer = async () => {
     const app = express();
+    app.disable('x-powered-by');
+    const SECRET = 'alihasanaSecret'
+    app.use(cors('*'));
+    app.use(session({
+        name: 'sessionName',
+        secret: 'secretKey',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 3600000,
+            sameSite: true,
+            secure: 'development'
+        }
+    }))
 
     const server = new ApolloServer({
+        playground: true,
         typeDefs,
-        resolvers
+        resolvers,
+        context: ({ req, res }) => ({ req, res }),
     });
 
 

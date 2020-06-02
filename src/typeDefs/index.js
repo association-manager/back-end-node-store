@@ -23,6 +23,15 @@ export const typeDefs = gql`
         amount: Float!
         vat: Float!
     }
+    type User {
+        id: Int
+        first_name: String
+        last_name: String
+        mobile: Int
+        email: String
+        created_at: String
+    }
+    
     type Mutation {
         createProduct(
             name: String!,
@@ -32,5 +41,14 @@ export const typeDefs = gql`
             vat:Float!,
             associationId: Int!
         ): Product!
+        register(
+            first_name: String!,
+            last_name: String!,
+            roles: String!
+            mobile: Int!,
+            email: String!,
+            password: String!,
+        ): User!
+        login(email: String!, password: String!): String!
     }
 `;
