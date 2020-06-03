@@ -7,6 +7,7 @@ const ProductSchema = new Schema({
     name: String,
     description: String,
     url: String,
+    quantity: Number,
     price: Number,
     vat: Number,
     associationId: Number,

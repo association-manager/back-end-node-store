@@ -104,11 +104,10 @@ export const resolvers = {
             if(products !== []) {
                await products.map(async (product)=> {
                     let p = await Product.findOne({_id: product.id});
-                    let newQuantity = p.quantity - product.quality;
-                    Product.updateOne({_id: product.id }, {quantity:newQuantity})
-                })
+                    let newQuantity = parseInt(p.quantity) - parseInt(product.quantity);
+                    await Product.updateOne({_id: product.id }, {quantity:newQuantity});
+               })
             }
-
             // create Invoice
             let invoiceId = await knex('invoice_shop').insert({
                 data: JSON.stringify(data),
