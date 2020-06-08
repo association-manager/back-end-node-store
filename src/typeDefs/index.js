@@ -6,7 +6,7 @@ export const typeDefs = gql`
     input ProductInput { id: ID! name: String! quantity: Float! description: String url: String price:Float! vat:Float!
         associationId: Int! createdAt: String updatedAt: String }
     
-    input AddressInput { id: Int addressLine1:String!, addressLine2:String!, postalCode: Int!, city: String!}
+    input AddressInput { id: Int addressLine1:String!, addressLine2:String!, postalCode: String!, city: String!, country: String!}
 
     type Query {
     product(id:ID!): Product

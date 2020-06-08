@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import dotenv from 'dotenv';
+import Joi from '@hapi/joi';
+import { CheckOutValidator} from "../schemas";
 
 dotenv.config();
 
@@ -98,7 +100,11 @@ export const resolvers = {
             return token;
         },
         createSale: async (parent, {data}, context, info) => {
+            // Validation
+            const {value, error} = CheckOutValidator.validate(data, {abortEarly: false});
             // reduce product (Update the quantity of product)
+            console.log(value);
+            console.log(error);
 
             let products = data.products;
             if(products !== []) {
@@ -124,7 +130,7 @@ export const resolvers = {
                     address_line2: data.address.addressLine2,
                     invoice_shop_id: invoiceId[0],
                     city: data.address.city,
-                    postal_code: data.address.postal_code,
+                    postal_code: data.address.postalCode,
                     country: "france"
                 });
             }
