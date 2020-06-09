@@ -25,7 +25,7 @@ export const typeDefs = gql`
 
     type Mutation {
         createProduct( name: String!, description: String!, url:String!, price:Float!, quantity:Float!, vat:Float!, associationId: Int! ): Product!
-        register( first_name: String!, last_name: String!, roles: String! mobile: Int!, email: String!, password: String!, ): User!
+        register( first_name: String!, last_name: String!, mobile: Int!, email: String!, password: String!, dataUsageAgreement: Int! ): User!
         login(email: String!, password: String!): String!
         createSale(data: CheckoutInput! ): Invoice!
     }

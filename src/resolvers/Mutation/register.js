@@ -1,9 +1,22 @@
 import bcrypt from "bcrypt";
 import knex from "../../sql";
+import {RegisterValidator} from "../../schemas";
+import { UserInputError } from "apollo-server-express";
 
 
 export default async (parent, args, {models}) => {
     const user = args;
+    const validate = RegisterValidator.validate(user, {abortEarly: false});
+    if(validate.error) {
+        throw  new UserInputError( "Please provide the correct input data", {
+            validationError : validate.error.details
+        });
+    }
+    let findUser = await knex('user').select('email').where({email: user.email});
+    if (findUser[0]) {
+        return new UserInputError('User already Exit, please login by using your password')
+    }
+
     user.password = await bcrypt.hash(user.password, 12);
 
     return await knex('user').insert(
@@ -15,12 +28,11 @@ export default async (parent, args, {models}) => {
             password: user.password,
             roles: "['ROLE_SHOPPING']",
             created_at: new Date(),
-            data_usage_agreement: 0
+            data_usage_agreement: user.dataUsageAgreement
 
         }).then(async (result) => {
         return await knex('user').select('*').where({id: result})
             .then((a) => {
-                console.log(a[0].id);
                 return a[0];
             }).catch((err) => {
                 console.log(err);
@@ -31,6 +43,7 @@ export default async (parent, args, {models}) => {
                 }
             });
     }).catch((err) => {
+        console.log('Error');
         console.log(err);
         return {
             success: false,
