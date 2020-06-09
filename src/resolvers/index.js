@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import dotenv from 'dotenv';
 import Joi from '@hapi/joi';
-import { CheckOutValidator} from "../schemas";
+import {CheckOutValidator, LoginValidator} from "../schemas";
 
 dotenv.config();
 
@@ -75,6 +75,15 @@ export const resolvers = {
             });
         },
         login: async (parent, {email, password}) => {
+            const validate = LoginValidator.validate({email, password}, {abortEarly: false});
+            if(validate.error) {
+                let error = {
+                    code: 401,
+                    message: validate.error.details
+                };
+                throw  new Error(JSON.stringify(error));
+
+            }
             const user = await knex('user').select("*").where({email: email});
             if (!user[0].email === email) {
                 throw new Error('Not user with that email');
@@ -101,10 +110,16 @@ export const resolvers = {
         },
         createSale: async (parent, {data}, context, info) => {
             // Validation
-            const {value, error} = CheckOutValidator.validate(data, {abortEarly: false});
+            const validate = CheckOutValidator.validate(data, {abortEarly: false});
+            if(validate.error) {
+                let error = {
+                    code: 401,
+                    message: validate.error.details
+                };
+               throw  new Error(JSON.stringify(error));
+
+            }
             // reduce product (Update the quantity of product)
-            console.log(value);
-            console.log(error);
 
             let products = data.products;
             if(products !== []) {
