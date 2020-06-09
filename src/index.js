@@ -24,7 +24,7 @@ const startServer = async () => {
             sameSite: true,
             secure: 'development'
         }
-    }))
+    }));
 
     const server = new ApolloServer({
         playground: true,
