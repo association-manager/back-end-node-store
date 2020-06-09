@@ -7,12 +7,11 @@ import session from 'express-session';
 import cors from 'cors';
 import dotenv  from 'dotenv';
 dotenv.config();
-import jwt from 'jsonwebtoken';
 
 const startServer = async () => {
     const app = express();
     app.disable('x-powered-by');
-    const SECRET = 'alihasanaSecret'
+    const SECRET = 'alihasanaSecret';
     app.use(cors('*'));
     app.use(session({
         name: 'sessionName',
@@ -31,6 +30,15 @@ const startServer = async () => {
         typeDefs,
         resolvers,
         context: ({ req, res }) => ({ req, res }),
+        formatError: (err) => {
+            // Don't give the specific errors to the client.
+            if (err.message.startsWith("Database Error: ")) {
+                return new Error('Internal server error');
+            }
+            // Otherwise return the original error.  The error can also
+            // be manipulated in other ways, so long as it's returned.
+            return err.message;
+        },
     });
 
 

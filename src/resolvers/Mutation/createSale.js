@@ -1,7 +1,7 @@
 import { CreateSaleValidator } from "../../schemas";
 import { Product } from "../../models/Product";
 import knex from "../../sql";
-import { UserInputError } from "apollo-server-express"
+import { UserInputError } from "apollo-server-express";
 
 
 export default async (parent, {data}, context, info) => {
