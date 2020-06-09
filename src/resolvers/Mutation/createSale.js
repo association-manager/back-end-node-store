@@ -1,12 +1,12 @@
-import {CheckOutValidator} from "../../schemas";
-import {Product} from "../../models/Product";
+import { CreateSaleValidator } from "../../schemas";
+import { Product } from "../../models/Product";
 import knex from "../../sql";
 import { UserInputError } from "apollo-server-express"
 
 
 export default async (parent, {data}, context, info) => {
     // Validation
-    const validate = CheckOutValidator.validate(data, {abortEarly: false});
+    const validate = CreateSaleValidator.validate(data, {abortEarly: false});
     if(validate.error) {
         throw  new UserInputError( "Please provide the correct input data", {
             validationError : validate.error.details
