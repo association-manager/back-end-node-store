@@ -1,5 +1,5 @@
-import {LoginValidator} from "../../schemas";
-import knex from "../../sql";
+import {LoginValidator} from "../../../schemas";
+import knex from "../../../sql";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
@@ -17,9 +17,6 @@ export default async (parent, {email, password}) => {
     const user = await knex('user').select("*").where({email: email});
     if (user.length === 0) {
         throw new Error('No user found');
-    }
-    if (!user[0].email === email) {
-        throw new Error('No user found with email :' + email);
     }
     const valid = await bcrypt.compare(password, user[0].password);
     if (!valid) {
