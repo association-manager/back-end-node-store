@@ -28,7 +28,7 @@ export const typeDefs = gql`
         register( first_name: String!, last_name: String!, mobile: Int!, email: String!, password: String!, dataUsageAgreement: Int! ): User!
         login(email: String!, password: String!): String!
         createSale(data: CheckoutInput! ): Invoice!
-        forgotPassword( email: String!): String!
+        forgotPassword( email: String!): Boolean!
         resetPassword(password: String!, token: String!): Boolean!
     }
 `;
