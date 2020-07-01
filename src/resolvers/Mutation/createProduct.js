@@ -3,9 +3,29 @@ import {CreateProductValidator} from "../../schemas";
 import { UserInputError } from "apollo-server-express"
 
 
-export default async (_, {name, description, url, quantity, price, vat, associationId}) => {
+export default async (_, {
+    name,
+    description,
+    mainImageUrl,
+    mainThumbnailUrl,
+    images,
+    quantity,
+    price,
+    vat,
+    associationId
+}) => {
     // Validation
-    const validate = CreateProductValidator.validate({name, description, url, quantity, price, vat, associationId},
+    const validate = CreateProductValidator.validate({
+            name,
+            description,
+            mainImageUrl,
+            mainThumbnailUrl,
+            images,
+            quantity,
+            price,
+            vat,
+            associationId
+        },
         {abortEarly: false});
     if(validate.error) {
         throw  new UserInputError( "Please provide the correct input data", {
@@ -17,7 +37,9 @@ export default async (_, {name, description, url, quantity, price, vat, associat
         name,
         description,
         quantity,
-        url,
+        mainImageUrl,
+        mainThumbnailUrl,
+        images,
         price,
         vat,
         associationId

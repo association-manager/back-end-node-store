@@ -6,10 +6,12 @@ const { Schema } = mongoose;
 const ProductSchema = new Schema({
     name: String,
     description: String,
-    url: String,
+    mainImageUrl: String,
+    mainThumbnailUrl: String,
     quantity: Number,
     price: Number,
     vat: Number,
+    images: Array,
     associationId: Number,
 }, {timestamps: true});
 
