@@ -4,7 +4,7 @@ export default async (parent, args, {models}) => {
     let payment = {};
     payment.description = args.description
     payment.amount = args.amount * 100
-    payment.currency = 'euro'
+    payment.currency = 'eur'
     payment.source = args.source
     let response;
     await stripe.charges.create(payment).then(async (result) => {
