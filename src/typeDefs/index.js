@@ -33,5 +33,8 @@ export const typeDefs = gql`
         createSale(data: CheckoutInput! ): Invoice!
         forgotPassword( email: String!): Boolean!
         resetPassword(password: String!, token: String!): Boolean!
+        payment(description: String!,
+        source: String!,
+        amount: Float!):Boolean!
     }
 `;
