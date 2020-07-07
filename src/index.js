@@ -8,6 +8,8 @@ import cors from 'cors';
 import dotenv  from 'dotenv';
 dotenv.config();
 
+import isAuth from './middleware/isAuth'
+
 const startServer = async () => {
     const app = express();
     app.disable('x-powered-by');
@@ -24,6 +26,7 @@ const startServer = async () => {
             secure: 'development'
         }
     }));
+    app.use(isAuth);
 
     const server = new ApolloServer({
         playground: true,
