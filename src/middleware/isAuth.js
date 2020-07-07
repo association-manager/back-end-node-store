@@ -8,22 +8,17 @@ module.exports = (req, res, next) => {
     const token = authHeader.split(' ');
     if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, res,'Error in token format');
     let decodedToken;
-    //console.log(process.env.SECRET)
-    let a = path.resolve(__dirname + '../../../jwt/public.key');
-    console.log(a);
-    let publicKey = fs.readFileSync(a, 'utf8'); // get data as string content
-    console.log(publicKey);
-    let verifyOptions = {
-        algorithm: 'RS256'
-    }
+    let publicKey = fs.readFileSync(path.resolve(__dirname + '../../../jwt/public.key'), 'utf8'); // get data as string content
     try {
-    decodedToken = jwt.verify(token[1], publicKey, verifyOptions);
+    decodedToken = jwt.verify(token[1], publicKey, {
+        algorithm: 'RS256'
+    });
     } catch (e) {
         return returnNull(req, res,'Error while verification');
     }
     if (!decodedToken) return returnNull(req, res,'Token is not authenticated');
-    req.isAuth = true
-    req.userId = decodedToken.user.id
+    req.isAuth = true;
+    req.userEmail = decodedToken.username;
     next();
 }
 
