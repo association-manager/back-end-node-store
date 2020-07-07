@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 
-export default async (parent, {email, password}) => {
+export default async (parent, {email, password}, {req}) => {
     const validate = LoginValidator.validate({email, password}, {abortEarly: false});
     if(validate.error) {
         let error = {
@@ -18,10 +18,13 @@ export default async (parent, {email, password}) => {
     if (user.length === 0) {
         throw new Error('No user found');
     }
-    const valid = await bcrypt.compare(password, user[0].password);
+
+    let hashedPassword = user[0].password.replace('$2y$', '$2a$');
+    const valid = await bcrypt.compare(password, hashedPassword);
     if (!valid) {
         throw new Error('Incorrect password');
     }
+    req.shoppingUser = true;
 
     // token = '12083098123414aslkjdasldf.asdhfaskjdh12982u793.asdlfjlaskdj10283491'
     // verify: needs secret | use me for authentication
