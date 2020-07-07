@@ -13,7 +13,14 @@ export default async (_, {
     price,
     vat,
     associationId
-}) => {
+}, {req}) => {
+    // Verification of user role
+    if(!req.isAuth) {
+        return new Error('Unauthenticated process');
+    }
+    if(!(req.userRole).includes('ROLE_USER')) {
+        return new Error('Unauthenticated user to create product')
+    }
     // Validation
     const validate = CreateProductValidator.validate({
             name,
