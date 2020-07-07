@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
+import knex from "../sql";
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
     const authHeader = req.get('Authorization')
     if(!authHeader)  return returnNull(req, res, 'Unauthenticated');
     const token = authHeader.split(' ');
@@ -14,11 +15,17 @@ module.exports = (req, res, next) => {
         algorithm: 'RS256'
     });
     } catch (e) {
-        return returnNull(req, res,'Error while verification');
+        return returnNull(req, res,'Unauthenticated: Error while verification');
     }
-    if (!decodedToken) return returnNull(req, res,'Token is not authenticated');
+    if (!decodedToken) return returnNull(req, res,'Unauthenticated: Token is not authenticated');
     req.isAuth = true;
     req.userEmail = decodedToken.username;
+    req.userRole = decodedToken.roles;
+    console.log(req);
+
+    let email = await  knex('user').select('email')
+        .where({ email: decodedToken.username })
+    if(email[0] === undefined) return returnNull(req, res, 'Unauthenticated: Not a valid user');;
     next();
 }
 
