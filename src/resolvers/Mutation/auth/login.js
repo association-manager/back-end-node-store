@@ -26,15 +26,13 @@ export default async (parent, {email, password}) => {
     // token = '12083098123414aslkjdasldf.asdhfaskjdh12982u793.asdlfjlaskdj10283491'
     // verify: needs secret | use me for authentication
     // decode: no secret | use me on the client side
-    const token = jwt.sign(
+    return jwt.sign(
         {
             user: _.pick(user, ['id', 'username']),
         },
-        process.env.SECERT,
+        process.env.SECRET,
         {
             expiresIn: '1y',
         },
     );
-
-    return token;
 }
