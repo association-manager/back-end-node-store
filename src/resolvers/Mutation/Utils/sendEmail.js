@@ -10,7 +10,6 @@ const auth = {
         domain: process.env.MAIL_GUN_DOMAIN
     }
 };
-console.log(auth)
 const nodeMailerMailGun = nodeMailer.createTransport(mg(auth));
 
 

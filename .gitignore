@@ -5,3 +5,7 @@ package-lock.json
 yarn-error.log
 yarn.lock
 .env
+
+#ignore php secret keys
+jwt/private.key
+jwt/public.key
