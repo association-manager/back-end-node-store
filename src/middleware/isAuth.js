@@ -1,17 +1,18 @@
 import jwt from 'jsonwebtoken';
 
 module.exports = (req, res, next) => {
+    return next();
     const authHeader = req.get('Authorization')
-    if(!authHeader)  return returnNull(req, res, 'No Header Found');
+    if(!authHeader)  return returnNull(req, res, 'Unauthenticated');
     const token = authHeader.split(' ');
-    if (token.length !== 2 || token[0] !== 'Bearer' || token[1] !== '') return returnNull(req, 'Error in token format');
+    if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, res,'Error in token format');
     let decodedToken;
     try {
     decodedToken = jwt.verify(token[1], process.env.SECERT);
     } catch (e) {
-        return returnNull(req, 'Error while verification');
+        return returnNull(req, res,'Error while verification');
     }
-    if (!decodedToken) return returnNull(req, 'Token is not authenticated');
+    if (!decodedToken) return returnNull(req, res,'Token is not authenticated');
     req.isAuth = true
     req.userId = decodedToken.user.id
     next();
