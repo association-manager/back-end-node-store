@@ -2,7 +2,6 @@ import {LoginValidator} from "../../../schemas";
 import knex from "../../../sql";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import _ from "lodash";
 
 export default async (parent, {email, password}, {req}) => {
     const validate = LoginValidator.validate({email, password}, {abortEarly: false});
@@ -29,9 +28,11 @@ export default async (parent, {email, password}, {req}) => {
     // token = '12083098123414aslkjdasldf.asdhfaskjdh12982u793.asdlfjlaskdj10283491'
     // verify: needs secret | use me for authentication
     // decode: no secret | use me on the client side
+    console.log(user);
     return jwt.sign(
         {
-            user: _.pick(user, ['id', 'username']),
+            username:user[0].email,
+            roles: user[0].roles
         },
         process.env.SECRET,
         {

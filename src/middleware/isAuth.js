@@ -12,10 +12,34 @@ module.exports = async (req, res, next) => {
             res.send({'message':'Unauthenticated Access'})
             return res
         }
+        const authCart = req.get('AuthorizationCart')
+        if(!authCart) return returnCartNull(req, next)
+        const tokenUser = authCart.split(' ');
+        if (tokenUser.length !== 2 ||
+            tokenUser[0] !== 'Bearer' ||
+            tokenUser[1] === '') return returnCartNull(req, next)
+
+        let decodeCartToken;
+        try {
+            decodeCartToken = jwt.verify(tokenUser[1], process.env.SECRET);
+        } catch (e) {
+            return returnCartNull(req, next)
+        }
+        // decodeCartToken.username is email, since symfony is sending username,
+        // so we use it same in node
+        if (!decodeCartToken ||
+            decodeCartToken.username === undefined
+        ) return returnCartNull(req, next)
+        let emailCart = await knex('user').select('email', 'roles')
+            .where({email: decodeCartToken.username})
+        if (emailCart[0] === undefined) return returnCartNull(req, next)
+        req.isAuthCart = true;
+        req.userCart = emailCart[0].email;
+        req.roleCart =  emailCart[0].roles;
         return returnNull(req, next);
     }
     const token = authHeader.split(' ');
-    if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, next,);
+    if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, next);
     let decodedToken;
     let publicKey = fs.readFileSync(
         path.resolve(
@@ -30,16 +54,21 @@ module.exports = async (req, res, next) => {
         return returnNull(req, next);
     }
     if (!decodedToken) return returnNull(req, next);
-    req.isAuth = true;
-    req.userEmail = decodedToken.username;
-    req.userRole = decodedToken.roles;
     let email = await knex('user').select('email')
         .where({email: decodedToken.username})
     if (email[0] === undefined) return returnNull(req, next);
+    req.isAuth = true;
+    req.userEmail = decodedToken.username;
+    req.userRole = decodedToken.roles;
     next();
 }
 
 let returnNull = (req, next) => {
     req.isAuth = false;
+    return next();
+}
+
+let returnCartNull = (req, next) => {
+    req.isAuthCart = false
     return next();
 }
