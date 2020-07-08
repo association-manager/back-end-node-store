@@ -4,9 +4,13 @@ import knex from "../../sql";
 import { UserInputError } from "apollo-server-express";
 
 
-export default async (parent, {data}, context, info) => {
+export default async (parent, {data}, {req}, info) => {
+    if(!req.isAuthCart) {
+        return new Error('UnAuthorized access')
+    }
     // Validation
     const validate = CreateSaleValidator.validate(data, {abortEarly: false});
+    console.log(validate.error.details);
     if(validate.error) {
         throw  new UserInputError( "Please provide the correct input data", {
             validationError : validate.error.details
