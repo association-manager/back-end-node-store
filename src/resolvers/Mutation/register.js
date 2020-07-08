@@ -4,7 +4,7 @@ import {RegisterValidator} from "../../schemas";
 import { UserInputError } from "apollo-server-express";
 
 
-export default async (parent, args, {models}) => {
+export default async (parent, args) => {
     const user = args;
     const validate = RegisterValidator.validate(user, {abortEarly: false});
     if(validate.error) {
@@ -18,6 +18,8 @@ export default async (parent, args, {models}) => {
     }
 
     user.password = await bcrypt.hash(user.password, 12);
+    user.password.replace('$2a$', '$2y$')
+    user.password.replace('$2b$', '$2y$')
 
     return await knex('user').insert(
         {
@@ -26,7 +28,7 @@ export default async (parent, args, {models}) => {
             last_name: user.last_name,
             mobile: user.mobile,
             password: user.password,
-            roles: "['ROLE_SHOPPING']",
+            roles: "[\"ROLE_SHOPPING\"]",
             created_at: new Date(),
             data_usage_agreement: user.dataUsageAgreement
 
