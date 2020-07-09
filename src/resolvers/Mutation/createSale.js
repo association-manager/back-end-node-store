@@ -4,10 +4,14 @@ import knex from "../../sql";
 import { UserInputError } from "apollo-server-express";
 
 
-export default async (parent, {data}, context, info) => {
+export default async (parent, {data}, {req}, info) => {
+    if(!req.isAuthCart) {
+        return new Error('UnAuthorized access')
+    }
     // Validation
     const validate = CreateSaleValidator.validate(data, {abortEarly: false});
     if(validate.error) {
+        console.log(error)
         throw  new UserInputError( "Please provide the correct input data", {
             validationError : validate.error.details
         } );
@@ -17,12 +21,21 @@ export default async (parent, {data}, context, info) => {
 
     let products = data.products;
     if(products !== []) {
-        await products.map(async (product)=> {
-            let p = await Product.findOne({_id: product.id});
-            let newQuantity = parseInt(p.quantity) - parseInt(product.quantity);
-            await Product.updateOne({_id: product.id }, {quantity:newQuantity});
-        })
+        let sentinel = []
+        try {
+            await products.map(async (product)=> {
+                let p = await Product.findOne({_id: product.id});
+                sentinel.push(product.id);
+                if(p === undefined) throw sentinel ;
+                let newQuantity = parseInt(p.quantity) - parseInt(product.quantity);
+                await Product.updateOne({_id: product.id }, {quantity:newQuantity});
+            })
+            console.log(sentinel);
+        } catch (e) {
+            throw new Error('Product is empty in database')
+        }
     }
+    console.log(products);
     // create Invoice
     let invoiceId = await knex('invoice_shop').insert({
         data: JSON.stringify(data),
