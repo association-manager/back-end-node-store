@@ -6,7 +6,7 @@ export const typeDefs = gql`
     input UserInput { id: Int! first_name: String! last_name: String! mobile: Int! email: String! }
 
     input ProductInput { id: ID! name: String! quantity: Float! description: String mainThumbnailUrl:String! price:Float! vat:Float!
-        associationId: Int! createdAt: String updatedAt: String }
+        associationId: Int! createdAt: String updatedAt: String mainImageUrl: String! images:[String]}
     
     input AddressInput { id: Int addressLine1:String! addressLine2:String! postalCode: String! city: String! country: String!}
 
