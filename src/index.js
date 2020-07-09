@@ -1,13 +1,14 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import mongoose from "mongoose";
-import { resolvers } from "./resolvers";
-import { typeDefs } from "./typeDefs";
 import session from 'express-session';
 import cors from 'cors';
 import dotenv  from 'dotenv';
 dotenv.config();
 
+
+const { resolvers } = require("./resolvers/index");
+import { typeDefs } from "./typeDefs";
 import isAuth from './middleware/isAuth'
 
 const startServer = async () => {
