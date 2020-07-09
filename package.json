@@ -13,8 +13,10 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "apollo-server-express": "^2.14.1",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -30,11 +32,5 @@
     "nodemailer": "^6.4.8",
     "nodemailer-mailgun-transport": "^2.0.0",
     "stripe": "^8.68.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.2",
-    "@babel/node": "^7.10.1",
-    "@babel/preset-env": "^7.10.2"
   }
 }
