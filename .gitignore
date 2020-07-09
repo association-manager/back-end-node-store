@@ -9,3 +9,6 @@ yarn.lock
 #ignore php secret keys
 jwt/private.key
 jwt/public.key
+
+## ignore build file
+lib/*
