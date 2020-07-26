@@ -40,10 +40,11 @@ export const forgotPasswordEmail = async (parameters) => {
 };
 
 export const contactFrontEmail = async (parameters) => {
+    console.log(parameters);
     return await nodeMailerMailGun.sendMail({
         from: 'noreplay@associationmanager.com',
         to: 'hasana.ali@gmail.com', // An array if you have multiple recipients.
-        subject: "Nouvelle demande de contact de "+ parameters.name,
+        subject: "Nouvelle demande de contact de "+ parameters.data.name,
         template: {
             name: path.join(__dirname, './../../../emailTemplate/contactFront.hbs'),
             engine: 'handlebars',
