@@ -5,9 +5,7 @@ import session from 'express-session';
 import cors from 'cors';
 import dotenv  from 'dotenv';
 dotenv.config();
-
-
-const { resolvers } = require("./resolvers/index");
+import { resolvers } from "./resolvers/index";
 import { typeDefs } from "./typeDefs";
 import isAuth from './middleware/isAuth'
 
@@ -28,6 +26,7 @@ const startServer = async () => {
         }
     }));
     app.use(isAuth);
+
 
     const server = new ApolloServer({
         playground: true,

@@ -5,6 +5,7 @@ import createSale from './createSale';
 import createProduct from './createProduct';
 import resetPassword from './auth/resetPassword'
 import payment from './payment'
+import contactFront from './sendEmail/contactFront'
 
 export default {
     createProduct,
@@ -14,4 +15,5 @@ export default {
     forgotPassword,
     resetPassword,
     payment,
+    contactFront
 }
