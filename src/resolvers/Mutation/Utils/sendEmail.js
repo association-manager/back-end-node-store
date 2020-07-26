@@ -48,10 +48,10 @@ export const contactFrontEmail = async (parameters) => {
             name: path.join(__dirname, './../../../emailTemplate/contactFront.hbs'),
             engine: 'handlebars',
             context: {
-                email: parameters.email,
-                name: parameters.name,
-                subject: parameters.data.subject,
-                message: parameters.data.message,
+                email: parameters.data.email,
+                name: parameters.data.name.replace(/<[^>]+>|\s/g, ' '),
+                subject: parameters.data.subject.replace(/<[^>]+>|\s/g, ' '),
+                message: parameters.data.message.replace(/<[^>]+>|\s/g, ' '),
 
             }
         }
@@ -72,14 +72,14 @@ export const contactFrontEmail = async (parameters) => {
 const contactFrontVisitor = async (parameters) => {
     return await nodeMailerMailGun.sendMail({
         from: 'noreplay@associationmanager.com',
-        to: parameters.email, // An array if you have multiple recipients.
+        to: parameters.data.email, // An array if you have multiple recipients.
         subject: "Accusé de réception de votre demande d'contact",
         template: {
             name: path.join(__dirname, './../../../emailTemplate/contactFrontVisitor.hbs'),
             engine: 'handlebars',
             context: {
-                email: parameters.email,
-                name: parameters.name
+                email: parameters.data.email,
+                name: parameters.data.name.replace(/<[^>]+>|\s/g, ' ')
             }
         }
     })

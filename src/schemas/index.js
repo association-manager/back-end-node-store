@@ -4,3 +4,4 @@ export {default as CreateProductValidator} from './createProduct';
 export {default as RegisterValidator} from './register';
 export {default as forgotPasswordValidator} from './auth/forgotPassword';
 export {default as resetPasswordValidator} from './auth/resetPassword';
+export {default as contactFrontValidator} from './sendEmail/contactFront';
