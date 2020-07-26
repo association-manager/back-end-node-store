@@ -19,7 +19,7 @@ export const forgotPasswordEmail = async (parameters) => {
         to: parameters.email, // An array if you have multiple recipients.
         subject: "Réinitialisation de votre mot de passe",
         template: {
-            name: path.join(__dirname, './../../../emailTemplate/forgotPassword.hbs'),
+            name: path.join(__dirname, './../../../../emailTemplate/forgotPassword.hbs'),
             engine: 'handlebars',
             context: {
                 email: parameters.email,
@@ -46,7 +46,7 @@ export const contactFrontEmail = async (parameters) => {
         to: 'hasana.ali@gmail.com', // An array if you have multiple recipients.
         subject: "Nouvelle demande de contact de "+ parameters.data.name,
         template: {
-            name: path.join(__dirname, './../../../emailTemplate/contactFront.hbs'),
+            name: path.join(__dirname, './../../../../emailTemplate/contactFront.hbs'),
             engine: 'handlebars',
             context: {
                 email: parameters.data.email,
@@ -79,7 +79,7 @@ const contactFrontVisitor = async (parameters) => {
         to: parameters.data.email, // An array if you have multiple recipients.
         subject: "Accusé de réception de votre demande d'contact",
         template: {
-            name: path.join(__dirname, './../../../emailTemplate/contactFrontVisitor.hbs'),
+            name: path.join(__dirname, './../../../../emailTemplate/contactFrontVisitor.hbs'),
             engine: 'handlebars',
             context: {
                 email: parameters.data.email,
