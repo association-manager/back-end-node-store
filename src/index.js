@@ -25,6 +25,7 @@ const startServer = async () => {
             secure: 'development'
         }
     }));
+    app.use(isAuth);
 
 
     const server = new ApolloServer({
