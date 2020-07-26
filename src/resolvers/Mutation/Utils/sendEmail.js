@@ -17,7 +17,7 @@ export const forgotPasswordEmail = async (parameters) => {
     return await nodeMailerMailGun.sendMail({
         from: 'noreplay@associationmanager.com',
         to: parameters.email, // An array if you have multiple recipients.
-        subject: "Email for your reset password request",
+        subject: "Réinitialisation de votre mot de passe",
         template: {
             name: path.join(__dirname, './../../../emailTemplate/forgotPassword.hbs'),
             engine: 'handlebars',
@@ -38,3 +38,59 @@ export const forgotPasswordEmail = async (parameters) => {
         return false;
     });
 };
+
+export const contactFrontEmail = async (parameters) => {
+    return await nodeMailerMailGun.sendMail({
+        from: 'noreplay@associationmanager.com',
+        to: 'hasana.ali@gmail.com', // An array if you have multiple recipients.
+        subject: "Nouvelle demande de contact de "+ parameters.name,
+        template: {
+            name: path.join(__dirname, './../../../emailTemplate/contactFront.hbs'),
+            engine: 'handlebars',
+            context: {
+                email: parameters.email,
+                name: parameters.name,
+                subject: parameters.data.subject,
+                message: parameters.data.message,
+
+            }
+        }
+    })
+        .then(async (info) => {
+            console.log('Response: ' + JSON.stringify(info));
+            let emailToVisitor = await contactFrontVisitor(parameters);
+            if(!emailToVisitor.status) return emailToVisitor;
+            return (info.id ) ? {status: true, code: 200} : {status: false, code: 444}
+        })
+        .catch((err) => {
+            console.log('Response: ' + JSON.stringify(err));
+            console.log('message: Error while send request Email send to client');
+            return {status: false, code: 503};
+        });
+};
+
+const contactFrontVisitor = async (parameters) => {
+    return await nodeMailerMailGun.sendMail({
+        from: 'noreplay@associationmanager.com',
+        to: parameters.email, // An array if you have multiple recipients.
+        subject: "Accusé de réception de votre demande d'contact",
+        template: {
+            name: path.join(__dirname, './../../../emailTemplate/contactFrontVisitor.hbs'),
+            engine: 'handlebars',
+            context: {
+                email: parameters.email,
+                name: parameters.name
+            }
+        }
+    })
+        .then((info) => {
+            console.log('Response: ' + JSON.stringify(info));
+            return (info.id ) ? {status: true, code: 200} : {status: false, code: 444}
+        })
+        .catch((err) => {
+            console.log('Response: ' + JSON.stringify(err));
+            console.log('message: Error while send request Email send to Visitor');
+            return {status: false, code: 503};
+        });
+};
+
