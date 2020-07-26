@@ -60,12 +60,15 @@ export const contactFrontEmail = async (parameters) => {
             console.log('Response: ' + JSON.stringify(info));
             let emailToVisitor = await contactFrontVisitor(parameters);
             if(!emailToVisitor.status) return emailToVisitor;
-            return (info.id ) ? {status: true, code: 200} : {status: false, code: 444}
+            return (info.id ) ? {status: true, code: 200, message: "email send sucessfuly"} : {
+                status: false,
+                code: 444,
+                message: "Error while send request Email send to client"}
         })
         .catch((err) => {
             console.log('Response: ' + JSON.stringify(err));
             console.log('message: Error while send request Email send to client');
-            return {status: false, code: 503};
+            return {status: false, code: 503, message: "Error while send request Email send to client"};
         });
 };
 
@@ -85,12 +88,15 @@ const contactFrontVisitor = async (parameters) => {
     })
         .then((info) => {
             console.log('Response: ' + JSON.stringify(info));
-            return (info.id ) ? {status: true, code: 200} : {status: false, code: 444}
+            return (info.id ) ? {status: true, code: 200, message: "email send sucessfuly"} : {
+                status: false,
+                code: 444,
+                message: "Error while send request Email send to client"}
         })
         .catch((err) => {
             console.log('Response: ' + JSON.stringify(err));
             console.log('message: Error while send request Email send to Visitor');
-            return {status: false, code: 503};
+            return {status: false, code: 503, message: "Error while send request Email send to Visitor"};
         });
 };
 

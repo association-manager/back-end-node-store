@@ -1,18 +1,14 @@
 import {contactFrontEmail} from '../Utils/sendEmail';
 import {contactFrontValidator} from "../../../schemas";
-import {UserInputError} from "apollo-server-express";
+import {errorMessage} from "../Utils/errorMessageFormat";
 
 export default async (parent, data, {req}, info) => {
-    const validate = contactFrontValidator.validate(data,
+    const validate = await contactFrontValidator.validate(data,
         {abortEarly: false});
-    console.log(validate);
     if(validate.error) {
-        return {status: false, code: 406, message: "Please provide the correct input data" };
+        return {message: errorMessage(validate), status: false, code: 406 };
     }
-    console.log(data);
     let parameters = {}
     parameters.data = data;
-
     return contactFrontEmail(parameters)
-
 }

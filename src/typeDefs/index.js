@@ -25,7 +25,7 @@ export const typeDefs = gql`
     type User { id: Int! first_name: String! last_name: String! mobile: Int! email: String! created_at: String! }
 
     type Checkout { id: ID! products: [Product!]! user: User! }
-    type Response { status: Boolean!, code: Int!}
+    type Response { status: Boolean! code: Int! message: String!}
 
     type Mutation {
         createProduct( name: String!, description: String!, mainImageUrl:String!, mainThumbnailUrl:String!, images:[String!]!, price:Float!, quantity:Float!, vat:Float!, associationId: Int! ): Product!
