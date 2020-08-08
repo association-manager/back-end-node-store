@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 
 
 export default async (parent, {token, password}) => {
+    console.log('resetPassword');
     const validate = resetPasswordValidator.validate({token, password}, {abortEarly: false});
     if(validate.error) {
         let error = {
