@@ -43,12 +43,13 @@ module.exports = async (req, res, next) => {
     const token = authHeader.split(' ');
     if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, next);
     let decodedToken;
-
+/*
     let publicKey = fs.readFileSync(
         path.resolve(
             __dirname + '../../../jwt/public.key'),
         'utf8'
     ); // get data as string content
+    */
     try {
         decodedToken = jwt.verify(token[1], process.env.SECRET, {
             algorithm: 'RS256'
