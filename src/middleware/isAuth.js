@@ -4,7 +4,9 @@ import path from 'path';
 import knex from "../sql";
 
 module.exports = async (req, res, next) => {
+    console.log('Inside Auth middle ware')
     const authHeader = req.get('Authorization')
+    console.log(authHeader);
     if (!authHeader) {
         const cartHeader = req.get('Shopping-Cart')
         if (!cartHeader || cartHeader !== 'associationManager') {
@@ -41,21 +43,27 @@ module.exports = async (req, res, next) => {
     const token = authHeader.split(' ');
     if (token.length !== 2 || token[0] !== 'Bearer' || token[1] === '') return returnNull(req, next);
     let decodedToken;
+
     let publicKey = fs.readFileSync(
         path.resolve(
             __dirname + '../../../jwt/public.key'),
         'utf8'
     ); // get data as string content
     try {
-        decodedToken = jwt.verify(token[1], publicKey, {
+        decodedToken = jwt.verify(token[1], process.env.SECRET, {
             algorithm: 'RS256'
         });
+        console.log(decodedToken);
     } catch (e) {
+        console.log(e);
+        console.log(decodedToken);
         return returnNull(req, next);
     }
+    console.log(decodedToken);
     if (!decodedToken) return returnNull(req, next);
     let email = await knex('user').select('email')
         .where({email: decodedToken.username})
+    console.log(email);
     if (email[0] === undefined) return returnNull(req, next);
     req.isAuth = true;
     req.userEmail = decodedToken.username;
