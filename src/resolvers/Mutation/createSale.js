@@ -5,9 +5,9 @@ import { UserInputError } from "apollo-server-express";
 
 
 export default async (parent, {data}, {req}, info) => {
-    if(!req.isAuthCart) {
-        return new Error('UnAuthorized access')
-    }
+    //if(!req.isAuthCart) {
+    //    return new Error('UnAuthorized access')
+    //}
     // Validation
     const validate = CreateSaleValidator.validate(data, {abortEarly: false});
     if(validate.error) {
