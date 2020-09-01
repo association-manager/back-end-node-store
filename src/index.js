@@ -13,7 +13,7 @@ const startServer = async () => {
     const app = express();
     app.disable('x-powered-by');
     const SECRET = 'alihasanaSecret';
-    app.use(cors('*'));
+    app.use(cors());
     app.use(session({
         name: 'sessionName',
         secret: 'secretKey',
